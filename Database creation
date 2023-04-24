@@ -217,38 +217,56 @@ INSERT INTO TULBUR(TULBUR_HEMJEE, TULBUR_OGNOO,TULBUR_HELBER_CODE, ZAHIALGA_DUGA
 	(36000.0,"2023-04-19",2,13),
 	(17000.0,"2023-04-19",1,14);
 	
-	CREATE VIEW it_employees as
+CREATE VIEW it_employees as
 SELECT AJILTAN_OWOG,AJILTAN_NER
 FROM  AJILTAN;
 SELECT * FROM it_employees;
+
 CREATE VIEW it_employees2 as
 SELECT * FROM AJILTAN;
 SELECT * FROM it_employees2;
+
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ajiltan_ner`(IN NER varchar(255))
 BEGIN
 SELECT * FROM AJILTAN WHERE AJILTAN_NER = NER;
 END//
 DELIMITER ;
+
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ajiltan_code`(IN acode varchar(255))
 BEGIN
 SELECT * FROM AJILTAN WHERE AJILTAN_CODE = acode;
 END//
 DELIMITER ;
+
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_registriin_dugaar`(IN register varchar(255))
 BEGIN
 SELECT * FROM AJILTAN WHERE REGISTERIIN_DUGAAR = register;
 END//
 DELIMITER ;
+
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ajiltan_turul_code`(IN acode varchar(255))
 BEGIN
 SELECT * FROM AJILTAN_TURUL WHERE AJILTAN_CODE = acode;
 END//
 DELIMITER ;
+
 CALL get_ajiltan_ner('MARGAD');
 CALL get_ajiltan_code('DONDOV');
 CALL get_registriin_dugaar('MY03272611');
-CALL get_ajiltan_turu_code('3');
+CALL get_ajiltan_turu_code('3');\
+
+DELIMITER //
+CREATE PROCEDURE AJILTAN_USTGAH_ID(
+  IN AJILTAN_ID INT
+)
+BEGIN
+	DELETE FROM AJILTAN WHERE AJILTAN_CODE = AJILTAN_ID;
+END//
+DELIMITER ;
+
+CALL AJILTAN_USTGAH_ID (2);
+
