@@ -269,7 +269,7 @@ END//
 DELIMITER ;
 
 CALL AJILTAN_USTGAH_ID (2);
-#MUNJEGIIN NEMSEN PROCEDURUUD
+#################################### #MUNJEGIIN NEMSEN PROCEDURUUD# ######################################################################################
 DELIMITER //
 	CREATE PROCEDURE ADD_ANGILAL( IN ANGIALAL_NAME VARCHAR(45))
 	BEGIN
