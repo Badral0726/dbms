@@ -339,5 +339,219 @@ SELECT YEAR(ZAHIALGIIN_OGNOO) AS JIL, MONTH(ZAHIALGIIN_OGNOO) AS SAR,
 				ON ZA.ZAHIALGA_DUGAAR=Z.ZAHIALGA_DUGAAR 
 GROUP BY YEAR(ZAHIALGIIN_OGNOO), MONTH(ZAHIALGIIN_OGNOO);
 SELECT*FROM ORLOGIIN_TAILAN;
-##########################################################################################################################################################
+################################################################BOLORNE#########################################################################################
+use COFFEESHOP;
+SET GLOBAL log_bin_trust_function_creators = 1;
 
+#ajiltan nemeh
+drop procedure if exists sp_ajiltan_INS;
+
+DELIMITER //
+CREATE PROCEDURE sp_ajiltan_INS(a_kod int , a_ovog varchar(45), a_ner varchar(45), a_reg varchar(10),
+a_logname varchar(45), a_pass varchar(16), a_hayg varchar(255), a_utas varchar(8), a_bd date, a_salbar int, a_turcode int)
+BEGIN
+	insert into AJILTAN values 	(a_kod, a_ovog, a_ner, a_reg,a_logname, a_pass, a_hayg, a_utas, a_bd, a_salbar, a_turcode);
+END //
+DELIMITER ;
+
+CALL sp_ajiltan_INS(12,"SUKHBAATAR","CHIMGEE","NE63091705","CHIMGEE","CHIMGEEPASS","HUGJIL","88098005","1963-09-17",002,3);
+CALL sp_ajiltan_INS(13,"SUKHBAATAR","NOMIN-ERDENE","SU88080201","NOMIKO","NOMIKOPASS","HUGJIL","88084089","1988-08-02",002,2);
+CALL sp_ajiltan_INS(14,"SUKHBAATAR","BOLORERDENE","UO04230204","BOLOR","BOLORPASS","HUGJIL","80432004","2004-03-02",002,3);
+
+select * from AJILTAN;
+
+#ajiltand uurclult hiih 
+drop procedure if exists sp_ajiltan_EDIT;
+
+DELIMITER //
+create procedure sp_ajiltan_EDIT (a_kod int , a_ovog varchar(45), a_ner varchar(45), a_reg varchar(10),
+a_logname varchar(45), a_pass varchar(16), a_hayg varchar(255), a_utas varchar(8), a_bd date, a_salbar int, a_turcode int)
+BEGIN
+	UPDATE AJILTAN SET AJILTAN_OWOG = a_ovog, AJILTAN_NER = a_ner, REGISTRIIN_DUGAAR = a_reg, 
+    AJILTAN_LOGINNAME = a_logname, AJILTAN_PASSWORD = a_pass, AJILTAN_HAYG = a_hayg, AJILTAN_UTAS = a_utas, AJILTAN_TURSUN_OGNOO = a_bd, 
+    SALBAR_CODE = a_salbar, AJILTAN_TURUL_CODE = a_turcode
+    WHERE AJILTAN_CODE = a_kod;
+END //
+DELIMITER ;
+
+CALL sp_ajiltan_EDIT(12,"SUKHBAATARN","CHIMGEEN","NE63091706","CHIMGEENE","CHIMGEEPASSW","HUGJIL HOT","88098006","1963-09-18",002,1);
+CALL sp_ajiltan_EDIT(13,"SUKHBAATA","NOMIN-ERDE","SU88080204","NOMIKO","NOMIKOPASS","HUGJIL","88084089","1988-08-02",002,2);
+CALL sp_ajiltan_EDIT(14,"SUKHBAAT","BOLORERD","UO04230205","BOLOR","BOLORPASS","HUGJIL","80432004","2004-03-02",002,3);
+
+select * from AJILTAN;
+
+
+
+#ajiltan ustgah
+drop procedure if exists sp_ajiltan_DEL;
+
+DELIMITER // 
+create procedure sp_ajiltan_DEL(a_kod int)
+BEGIN
+	delete from AJILTAN WHERE AJILTAN_CODE = a_kod; 
+END // 
+DELIMITER ; 
+
+CALL sp_ajiltan_DEL(12);
+CALL sp_ajiltan_DEL(13);
+CALL sp_ajiltan_DEL(14);
+
+select * from AJILTAN;
+
+
+# tulbur helber nemeh
+drop procedure if exists sp_tulbur_helber_lavlah_INS;
+
+DELIMITER //
+CREATE PROCEDURE sp_tulbur_helber_lavlah_INS(t_code int,t_ner varchar(45))
+BEGIN
+	insert into TULBUR_HELBER_LAVLAH values (t_code, t_ner);
+END //
+DELIMITER ;
+
+CALL sp_tulbur_helber_lavlah_INS(7, 'qpay');
+CALL sp_tulbur_helber_lavlah_INS(8, 'monpay');
+CALL sp_tulbur_helber_lavlah_INS(9, 'social pay');
+
+select * from TULBUR_HELBER_LAVLAH; 
+
+# tulbur helber zasah
+drop procedure if exists sp_tulbur_helber_lavlah_EDIT;
+
+DELIMITER //
+create procedure sp_tulbur_helber_lavlah_EDIT (t_code int,t_ner varchar(45))
+BEGIN
+	UPDATE TULBUR_HELBER_LAVLAH SET TULBUR_HELBER_NER = t_ner
+    WHERE TULBUR_HELBER_CODE = t_code;
+END //
+DELIMITER ;
+
+CALL sp_tulbur_helber_lavlah_EDIT(4,'qp');
+CALL sp_tulbur_helber_lavlah_EDIT(5, 'monpayYYY');
+CALL sp_tulbur_helber_lavlah_EDIT(6, 'social payYYY');
+
+select * from TULBUR_HELBER_LAVLAH; 
+
+#tulbur helber ustgah
+drop procedure if exists sp_tulbur_helber_lavlah_DEL;
+
+DELIMITER // 
+create procedure sp_tulbur_helber_lavlah_DEL(t_code int)
+BEGIN
+	delete from TULBUR_HELBER_LAVLAH WHERE TULBUR_HELBER_CODE = t_code; 
+END // 
+DELIMITER ; 
+
+CALL sp_tulbur_helber_lavlah_DEL(4);
+CALL sp_tulbur_helber_lavlah_DEL(5);
+CALL sp_tulbur_helber_lavlah_DEL(6);
+
+select * from TULBUR_HELBER_LAVLAH; 
+
+#hungulut nemeh
+drop procedure if exists sp_hungulult_INS;
+
+DELIMITER //
+CREATE PROCEDURE sp_hungulult_INS( h_code int, h_ner varchar(45), h_huvi int)
+BEGIN
+	insert into HUNGULULT values (h_code, h_ner, h_huvi);
+END //
+DELIMITER ;
+
+CALL sp_hungulult_INS(4, 'HUNGULULT4', 7);
+CALL sp_hungulult_INS(5, 'HUNGULULT5', 9);
+CALL sp_hungulult_INS(6, 'HUNGULULT6', 10);
+
+select * from HUNGULULT; 
+
+# hungulult uurclult oruulah
+drop procedure if exists sp_hungulult_EDIT;
+
+DELIMITER //
+create procedure sp_hungulult_EDIT ( in h_code int, in h_ner varchar(45), in h_huvi int)
+BEGIN
+	UPDATE HUNGULULT SET HUNGULULT_NER = h_ner, HUNGULULT_HUWI = h_huvi
+    WHERE HUNGULULT_CODE = h_code;
+END //
+DELIMITER ;
+
+CALL sp_hungulult_EDIT(4, 'HUNGULULTT4', 8);
+CALL sp_hungulult_EDIT(5, 'HUNGULULTT5', 10);
+CALL sp_hungulult_EDIT(6, 'HUNGULULTT6', 20);
+
+select * from HUNGULULT; 
+
+#hungulult ustgah
+drop procedure if exists sp_hungulult_DEL;
+
+DELIMITER //
+CREATE PROCEDURE sp_hungulult_DEL( in h_code int)
+BEGIN
+	delete from HUNGULULT 
+    WHERE HUNGULULT_CODE = h_code;
+END //
+DELIMITER ;
+
+CALL sp_hungulult_DEL(4);
+CALL sp_hungulult_DEL(5);
+CALL sp_hungulult_DEL(6);
+
+select * from HUNGULULT; 
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+#ajiltan jagsaalt harah 
+drop view if exists v_ajiltan_list;
+DELIMITER // 
+create view v_ajiltan_list 
+AS 
+	select AJILTAN_CODE, AJILTAN_NER, AJILTAN_UTAS, SALBAR_CODE  from AJILTAN;
+    //
+DELIMITER ; 
+
+SELECT * FROM v_ajiltan_list
+
+# hungulult jagsaalt harah
+drop view if exists v_hungulult_list
+DELIMITER // 
+create view v_hungulult_list 
+AS 
+	select HUNGULULT_NER,HUNGULULT_HUWI from HUNGULULT;
+    //
+DELIMITER ; 
+SELECT * FROM v_hungulult_list
+
+#tulbur helber jagsaalt harah 
+drop view if exists v_tulbur_helber_list
+DELIMITER // 
+create view v_tulbur_helber_list 
+AS 
+	select TULBUR_HELBER_CODE,TULBUR_HELBER_NER from TULBUR_HELBER_LAVLAH;
+    //
+DELIMITER ; 
+SELECT * FROM v_tulbur_helber_list;
+
+#hungulult haih
+drop view if exists v_hungulult_haih;
+DELIMITER //
+create view v_hungulult_haih
+AS
+select * from HUNGULULT WHERE HUNGULULT_CODE = fc_h_kod();
+//
+DELIMITER ;
+set @h_kod = 1;
+SELECT * FROM v_hungulult_haih;
+
+drop function if exists fc_h_kod;
+DELIMITER //
+create function fc_h_kod()
+returns int
+BEGIN 
+	if @h_kod is null then set @h_kod = 0;
+    end if;
+    return @h_kod;
+END //
+DELIMITER ;
+
+set @h_kod = 1;
+select fc_h_kod();
