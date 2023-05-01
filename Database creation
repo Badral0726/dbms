@@ -555,7 +555,7 @@ drop view if exists v_hungulult_list
 DELIMITER // 
 create view v_hungulult_list 
 AS 
-	select HUNGULULT_NER,HUNGULULT_HUWI from HUNGULULT;
+	select HUNGULULT_CODE,HUNGULULT_NER,HUNGULULT_HUWI from HUNGULULT;
     //
 DELIMITER ; 
 SELECT * FROM v_hungulult_list
@@ -571,29 +571,26 @@ DELIMITER ;
 SELECT * FROM v_tulbur_helber_list;
 
 #hungulult haih
+drop function if exists fc_h_ner;
+DELIMITER //
+create function fc_h_ner()
+returns varchar(45)
+BEGIN 
+	if @h_ner is null then set @h_ner = 0;
+    end if;
+    return @h_ner;
+END //
+DELIMITER ;
+
 drop view if exists v_hungulult_haih;
 DELIMITER //
 create view v_hungulult_haih
 AS
-select * from HUNGULULT WHERE HUNGULULT_CODE = fc_h_kod();
+select * from HUNGULULT WHERE HUNGULULT_NER = fc_h_ner();
 //
 DELIMITER ;
-set @h_kod = 1;
+set @h_ner = "HUNGULULT1";
 SELECT * FROM v_hungulult_haih;
-
-drop function if exists fc_h_kod;
-DELIMITER //
-create function fc_h_kod()
-returns int
-BEGIN 
-	if @h_kod is null then set @h_kod = 0;
-    end if;
-    return @h_kod;
-END //
-DELIMITER ;
-
-set @h_kod = 1;
-select fc_h_kod();
 
 ##############################################################--Badraliin bichsen query--#####################################################################
 DELIMITER //
