@@ -896,6 +896,42 @@ DELIMITER ;
 select fc_but_calc(1,1);
 
 
+DROP FUNCTION IF EXISTS fc_borluulalt_count;
+
+DELIMITER //
+
+CREATE FUNCTION fc_borluulalt_count(a_id DECIMAL(13,2), ognoo date)
+RETURNS DECIMAL(13,2)
+BEGIN 
+    DECLARE done INT;
+    DECLARE s, sum DECIMAL(13,2);
+    DECLARE bor_cur CURSOR FOR 
+    SELECT ZAHIALGA_DELGERENGUI.BUTEEGDEHUUN_TOO  
+		FROM ZAHIALGA, AJILTAN, ZAHIALGA_DELGERENGUI
+        WHERE ZAHIALGA.AJILTAN_CODE = AJILTAN.AJILTAN_CODE AND ZAHIALGA.ZAHIALGA_DUGAAR = ZAHIALGA_DELGERENGUI.ZAHIALGA_DUGAAR
+		AND AJILTAN.AJILTAN_CODE = a_id AND  ZAHIALGA.ZAHIALGIIN_OGNOO = ognoo;
+	DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+OPEN bor_cur;
+    SET sum = 0;
+bor_loop: LOOP
+        SET s = 0; 
+        FETCH bor_cur INTO s;
+        SET sum = sum + s;
+        
+        IF done = 1 THEN 
+            LEAVE bor_loop;
+        END IF;
+    END LOOP bor_loop;
+    
+    CLOSE bor_cur;
+    
+    RETURN sum;
+END //
+
+DELIMITER ;
+
+select fc_borluulalt_count(4,"2023-04-19");
 ###################################################################33(BOLORNE TRIGER)###########################################################################################
 use coffeeshop;
 
