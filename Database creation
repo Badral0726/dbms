@@ -875,7 +875,7 @@ BEGIN
     SET sum = 0;
     
     zah_loop: LOOP
-        SET s = 0; -- Set s to 0 at the start of each loop iteration
+        SET s = 0; 
         FETCH zah_cur INTO s;
         SET sum = sum + s;
         
