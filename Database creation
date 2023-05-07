@@ -843,3 +843,48 @@ SELECT * FROM ZAHIALGIIN_DELGERENGUI_HARAH;
 CREATE VIEW HUNGULULT_JAGSAALT_HARAH AS
 SELECT * FROM HUNGULULT;
 SELECT * FROM HUNGULULT_JAGSAALT_HARAH;
+############################################################################(BOLORNE CURSOR)###################################################################################
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+
+DROP FUNCTION IF EXISTS fc_but_calc;
+
+DELIMITER //
+
+CREATE FUNCTION fc_but_calc(z_dugaar INT, sale DECIMAL(13,2))
+RETURNS DECIMAL(13,2)
+BEGIN 
+    DECLARE done INT;
+    DECLARE s, sum, discount DECIMAL(13,2);
+    DECLARE zah_cur CURSOR FOR 
+        SELECT ZAHIALGA_DELGERENGUI.BUTEEGDEHUUN_TOO * BUTEEGDEHUUN.BUTEEGDEHUUN_UNE 
+        FROM ZAHIALGA, ZAHIALGA_DELGERENGUI, BUTEEGDEHUUN
+        WHERE ZAHIALGA.ZAHIALGA_DUGAAR = ZAHIALGA_DELGERENGUI.ZAHIALGA_DUGAAR 
+        AND ZAHIALGA_DELGERENGUI.BUTEEGDEHUUN_CODE = BUTEEGDEHUUN.BUTEEGDEHUUN_CODE
+        AND ZAHIALGA.ZAHIALGA_DUGAAR = z_dugaar;
+    DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+		SELECT HUNGULULT_HUWI INTO discount FROM HUNGULULT WHERE HUNGULULT_CODE = sale;
+    
+    OPEN zah_cur;
+    SET sum = 0;
+    
+    zah_loop: LOOP
+        SET s = 0; -- Set s to 0 at the start of each loop iteration
+        FETCH zah_cur INTO s;
+        SET sum = sum + s;
+        
+        IF done = 1 THEN 
+            LEAVE zah_loop;
+        END IF;
+    END LOOP zah_loop;
+    
+    CLOSE zah_cur;
+    
+	SET sum = sum - ((sum/100)* discount);
+         
+    RETURN sum;
+END //
+
+DELIMITER ;
+
+select fc_but_calc(1,1);
